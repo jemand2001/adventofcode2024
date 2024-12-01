@@ -22,6 +22,8 @@ executable advent-of-code2024
         Lib,
         Day1
     -- other-extensions:
-    build-depends:    base ^>=4.17.2.0
+    build-depends:
+        base ^>=4.17.2.0,
+        containers
     hs-source-dirs:   app
     default-language: Haskell2010
