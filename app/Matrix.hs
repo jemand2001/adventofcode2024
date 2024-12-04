@@ -1,4 +1,4 @@
-module Matrix (matrix, height, width, (@), (@@), Index (..), Matrix (), ray, rays, indices) where
+module Matrix (matrix, height, width, (@), (@@), Index, x, y, (//), Matrix (), ray, rays, indices, validIndexFor) where
 
 data Matrix a = Matrix {height :: Int, width :: Int, storage :: [[a]]}
 
@@ -40,3 +40,9 @@ m @@ is = map (m @) is
 
 indices :: Matrix a -> [Index]
 indices m = [I x_ y_ | x_ <- [0 .. width m], y_ <- [0 .. height m]]
+
+(//) :: Int -> Int -> Index
+(//) = I
+
+validIndexFor :: Matrix a -> Index -> Bool
+validIndexFor m idx = x idx >= 0 && y idx >= 0 && x idx < width m && y idx < height m
