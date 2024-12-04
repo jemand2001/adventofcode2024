@@ -1,4 +1,4 @@
-module Matrix (matrix, height, width, (@), (@@), Index, x, y, (//), Matrix (), ray, rays, indices, validIndexFor) where
+module Matrix (matrix, height, width, (@), (@@), Index, x, y, (//), Matrix (), ray, rays, indices, validIndexFor, in2dRange) where
 
 data Matrix a = Matrix {height :: Int, width :: Int, storage :: [[a]]}
 
@@ -44,5 +44,10 @@ indices m = [I x_ y_ | x_ <- [0 .. width m], y_ <- [0 .. height m]]
 (//) :: Int -> Int -> Index
 (//) = I
 
+infixr 2 //
+
 validIndexFor :: Matrix a -> Index -> Bool
-validIndexFor m idx = x idx >= 0 && y idx >= 0 && x idx < width m && y idx < height m
+validIndexFor m = in2dRange (0 // 0) (width m // height m)
+
+in2dRange :: Index -> Index -> Index -> Bool
+in2dRange (I left top) (I right bottom) (I x_ y_) = x_ >= left && y_ >= top && x_ < right && y_ < bottom

@@ -20,7 +20,7 @@ part2 m = length $ filter (isXMAS m) $ indices m
 
 isXMAS :: Matrix Char -> Index -> Bool
 isXMAS m idx
-  | x idx < 1 || y idx < 1 || x idx >= width m - 1 || y idx >= height m - 1 = False
+  | not $ in2dRange (1 // 1) (width m - 1 // height m - 1) idx = False
   | m @ idx /= 'A' = False
   | otherwise = count "MAS" (map ((m @@) . map (idx +)) diagonals) == 2
   where
