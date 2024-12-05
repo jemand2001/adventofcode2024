@@ -25,9 +25,12 @@ executable advent-of-code2024
         Day2,
         Day3,
         Day4,
+        Day5,
     -- other-extensions:
     build-depends:
         base ^>=4.17.2.0,
-        containers
+        containers,
+        text,
+        list-predicate
     hs-source-dirs:   app
     default-language: Haskell2010

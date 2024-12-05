@@ -20,3 +20,6 @@ pairwisePred p = and . pairwise' p
 sections :: [a] -> [[a]]
 sections [] = []
 sections (x : xs) = xs : map (x :) (sections xs)
+
+middle :: [a] -> a
+middle l = l !! (length l `div` 2)
