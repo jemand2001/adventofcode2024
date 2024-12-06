@@ -62,7 +62,13 @@ set m@(Matrix w h s) i@(I x_ y_) v
   | not (validIndexFor m i) = error $ "index " ++ show i ++ " out of bounds for matrix of size " ++ show w ++ "x" ++ show h
   | otherwise = Matrix w h newStorage
   where
-    newStorage = zipWith (curry (map snd . (\(y', l) -> map (\(x', v') -> if x_ == x' && y_ == y' then (x', v) else (x', v')) l))) [0 ..] (map (zip [0 ..]) s)
+    newStorage = zipWith replaceRow [0 ..] s
+    replaceRow y' l
+      | y' /= y_ = l
+      | otherwise = zipWith replaceCell [0 ..] l
+    replaceCell x' v'
+      | x' /= x_ = v'
+      | otherwise = v
 
-instance Show a => Show (Matrix a) where
+instance (Show a) => Show (Matrix a) where
   show = unlines . map (concatMap show) . storage

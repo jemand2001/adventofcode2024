@@ -5,6 +5,7 @@ module Day6 (day6) where
 import Data.Foldable
 import Data.List
 import Data.Maybe
+import Data.Ord (comparing)
 import Matrix
 
 day6 :: IO ()
@@ -59,15 +60,20 @@ findPath m g = go g [g]
             else
               go (last visited', turnRight d) $ visited ++ map (,d) visited'
 
+lastInDirection :: Matrix Tile -> Guard -> (Index, Bool)
+lastInDirection m g@(_, d) = (\l -> (l, validIndexFor m $ d + l)) $ last $ map fst $ takeWhile (\(i, t) -> validIndexFor m i && t /= Obstruction) $ map (\i -> (i, m @ i)) $ uncurry ray g
+
 hasLoop :: Matrix Tile -> Guard -> Bool
 hasLoop m g = go g []
   where
     go :: Guard -> [Guard] -> Bool
     go guard@(_, d) visited =
-      let (visited', inBounds) = walkInDirection m guard
-       in (inBounds && (any ((`elem` visited) . (,d)) visited' || go (last visited', turnRight d) (visited ++ map (,d) visited')))
+      let (visited', inBounds) = lastInDirection m guard
+          visited'' = ((visited', d) : visited)
+       in (inBounds && (((visited', d) `elem` visited) || go (visited', turnRight d) visited''))
 
 part2 :: (Matrix Tile, Guard) -> Int
 part2 (m, g) = length $ filter (\i -> hasLoop (set m i Obstruction) g) options
   where
-    options = nub $ filter (\c -> validIndexFor m c && m @ c /= Obstruction && c /= fst g) $ map (uncurry (+)) $ findPath m g
+    options :: [Index]
+    options = sortBy (comparing y) $ sortBy (comparing x) $ nub $ filter (\c -> validIndexFor m c && m @ c /= Obstruction && c /= fst g) $ map (uncurry (+)) $ findPath m g
