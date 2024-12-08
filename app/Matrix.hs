@@ -1,4 +1,4 @@
-module Matrix (matrix, height, width, storage, (@), (@@), Index, x, y, (//), Matrix (), ray, rays, indices, validIndexFor, in2dRange, set) where
+module Matrix (matrix, height, width, storage, (@), (@@), Index, x, y, (//), Matrix (), ray, rays, indices, validIndexFor, in2dRange, set, findIndices) where
 
 data Matrix a = Matrix {height :: Int, width :: Int, storage :: [[a]]}
 
@@ -72,3 +72,9 @@ set m@(Matrix w h s) i@(I x_ y_) v
 
 instance (Show a) => Show (Matrix a) where
   show = unlines . map (concatMap show) . storage
+
+instance Ord Index where
+  I x1 y1 <= I x2 y2 = (x1, y1) <= (x2, y2)
+
+findIndices :: (Eq a) => a -> Matrix a -> [Index]
+findIndices v m = filter ((== v) . (m @)) $ indices m
