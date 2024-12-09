@@ -1,13 +1,10 @@
 {-# LANGUAGE TupleSections #-}
-{-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
-{-# OPTIONS_GHC -Wno-name-shadowing #-}
+{-# OPTIONS_GHC -Wno-incomplete-uni-patterns -Wno-name-shadowing #-}
 
 module Day9 (day9) where
 
-import Control.Monad (forM)
 import Data.List (findIndex)
 import Data.Maybe
-import Debug.Trace
 import GHC.Stack
 
 day9 :: IO ()
