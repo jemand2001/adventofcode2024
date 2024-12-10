@@ -21,6 +21,8 @@ module Matrix
     down,
     left,
     right,
+    build,
+    mapWithIndex,
   )
 where
 
@@ -114,3 +116,9 @@ left = -1 // 0
 
 right :: Index
 right = 1 // 0
+
+build :: Index -> (Index -> a) -> Matrix a
+build (I w h) f = Matrix w h [[f (x_ // y_) | x_ <- [0 .. w - 1]] | y_ <- [0 .. h - 1]]
+
+mapWithIndex :: (Index -> a -> b) -> Matrix a -> Matrix b
+mapWithIndex f (Matrix w h s) = Matrix w h [[f (x_ // y_) i | (x_, i) <- zip [0 ..] row] | (y_, row) <- zip [0 ..] s]
