@@ -6,6 +6,7 @@ module Day9 (day9) where
 import Data.List (findIndex)
 import Data.Maybe
 import GHC.Stack
+import Data.Char (digitToInt)
 
 day9 :: IO ()
 day9 = interact $ show . checksum . part2 . readDisk
@@ -24,10 +25,10 @@ readDisk :: String -> Disk
 readDisk = readFile 0
   where
     readFile _ [] = []
-    readFile i (x : xs) = replicate (fromEnum x - zero) (Just i) ++ readEmpty (succ i) xs
+    readFile i (x : xs) = replicate (digitToInt x) (Just i) ++ readEmpty (succ i) xs
 
     readEmpty _ [] = []
-    readEmpty i (x : xs) = replicate (fromEnum x - zero) Nothing ++ readFile i xs
+    readEmpty i (x : xs) = replicate (digitToInt x) Nothing ++ readFile i xs
 
 part1 :: Disk -> Disk
 part1 d = compact d $ reverse d

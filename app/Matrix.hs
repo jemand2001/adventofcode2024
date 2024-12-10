@@ -1,4 +1,28 @@
-module Matrix (matrix, height, width, storage, (@), (@@), Index, x, y, (//), Matrix (), ray, rays, indices, validIndexFor, in2dRange, set, findIndices) where
+module Matrix
+  ( matrix,
+    height,
+    width,
+    storage,
+    (@),
+    (@@),
+    Index,
+    x,
+    y,
+    (//),
+    Matrix (),
+    ray,
+    rays,
+    indices,
+    validIndexFor,
+    in2dRange,
+    set,
+    findIndices,
+    up,
+    down,
+    left,
+    right,
+  )
+where
 
 data Matrix a = Matrix {height :: Int, width :: Int, storage :: [[a]]}
 
@@ -78,3 +102,15 @@ instance Ord Index where
 
 findIndices :: (Eq a) => a -> Matrix a -> [Index]
 findIndices v m = filter ((== v) . (m @)) $ indices m
+
+up :: Index
+up = 0 // -1
+
+down :: Index
+down = 0 // 1
+
+left :: Index
+left = -1 // 0
+
+right :: Index
+right = 1 // 0
