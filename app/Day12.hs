@@ -1,6 +1,7 @@
 module Day12 (day12) where
 
 import Data.List hiding (group)
+import Data.Ord (comparing)
 import qualified Data.Set as S
 import Data.Tuple (swap)
 import Matrix
@@ -33,14 +34,11 @@ perimeter s = concatMap (filter (not . (`S.member` s)) . (\i -> map (+ i) cardin
 part2 :: Matrix Char -> Int
 part2 m = sum $ map (\(_, g) -> sides g * length g) $ areas m
 
-data Direction = U | D | L | R deriving (Eq)
+data Direction = U | D | L | R deriving (Eq, Ord)
 
 sides :: Blob -> Int
-sides s = length $ ups ++ downs ++ lefts ++ rights
+sides s = length lines''
   where
     lines' = concatMap (filter (not . (`S.member` s) . snd) . (\i -> map ((+ i) <$>) cardinals')) $ S.toList s
     cardinals' = [(U, up), (D, down), (L, left), (R, right)]
-    ups = areas' $ map swap $ filter ((== U) . fst) lines'
-    downs = areas' $ map swap $ filter ((== D) . fst) lines'
-    lefts = areas' $ map swap $ filter ((== L) . fst) lines'
-    rights = areas' $ map swap $ filter ((== R) . fst) lines'
+    lines'' = concatMap areas' $ groupBy (\(_, dir1) (_, dir2) -> dir1 == dir2) $ sortBy (comparing snd) $ map swap lines'
