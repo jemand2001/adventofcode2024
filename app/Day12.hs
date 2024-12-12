@@ -4,7 +4,6 @@ import Data.List hiding (group)
 import qualified Data.Set as S
 import Data.Tuple (swap)
 import Matrix
-import Prelude hiding (Either (Left, Right))
 
 type Blob = S.Set Index
 
@@ -34,14 +33,14 @@ perimeter s = concatMap (filter (not . (`S.member` s)) . (\i -> map (+ i) cardin
 part2 :: Matrix Char -> Int
 part2 m = sum $ map (\(_, g) -> sides g * length g) $ areas m
 
-data Direction = Up | Down | Left | Right deriving (Eq, Ord, Enum, Show)
+data Direction = U | D | L | R deriving (Eq)
 
 sides :: Blob -> Int
 sides s = length $ ups ++ downs ++ lefts ++ rights
   where
     lines' = concatMap (filter (not . (`S.member` s) . snd) . (\i -> map ((+ i) <$>) cardinals')) $ S.toList s
-    cardinals' = [(Up, up), (Down, down), (Left, left), (Right, right)]
-    ups = areas' $ map swap $ filter ((== Up) . fst) lines'
-    downs = areas' $ map swap $ filter ((== Down) . fst) lines'
-    lefts = areas' $ map swap $ filter ((== Left) . fst) lines'
-    rights = areas' $ map swap $ filter ((== Right) . fst) lines'
+    cardinals' = [(U, up), (D, down), (L, left), (R, right)]
+    ups = areas' $ map swap $ filter ((== U) . fst) lines'
+    downs = areas' $ map swap $ filter ((== D) . fst) lines'
+    lefts = areas' $ map swap $ filter ((== L) . fst) lines'
+    rights = areas' $ map swap $ filter ((== R) . fst) lines'
