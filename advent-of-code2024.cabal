@@ -32,6 +32,7 @@ executable advent-of-code2024
         Day9,
         Day10,
         Day11,
+        Day12,
     -- other-extensions:
     build-depends:
         base ^>=4.17.2.0,

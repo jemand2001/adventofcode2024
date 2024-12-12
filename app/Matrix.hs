@@ -23,6 +23,10 @@ module Matrix
     right,
     build,
     mapWithIndex,
+    indicesWithValues,
+    cardinals,
+    sameX,
+    sameY,
   )
 where
 
@@ -122,3 +126,15 @@ build (I w h) f = Matrix w h [[f (x_ // y_) | x_ <- [0 .. w - 1]] | y_ <- [0 .. 
 
 mapWithIndex :: (Index -> a -> b) -> Matrix a -> Matrix b
 mapWithIndex f (Matrix w h s) = Matrix w h [[f (x_ // y_) i | (x_, i) <- zip [0 ..] row] | (y_, row) <- zip [0 ..] s]
+
+indicesWithValues :: Matrix a -> [(Index, a)]
+indicesWithValues (Matrix _ _ s) = [(x_ // y_, i) | (y_, row) <- zip [0 ..] s, (x_, i) <- zip [0 ..] row]
+
+cardinals :: [Index]
+cardinals = [up, down, left, right]
+
+sameX :: Index -> Index -> Bool
+sameX a b = x a == x b
+
+sameY :: Index -> Index -> Bool
+sameY a b = y a == y b
