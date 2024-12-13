@@ -9,7 +9,6 @@ import Data.Bifunctor
 import Data.Char
 import Data.Either
 import qualified Data.Text as T
-import Lib
 import Math.MFSolve
 import Matrix hiding (left)
 
@@ -51,8 +50,7 @@ solveClawMachine (CM a' b' prize') =
         values <- solution
         aValue <- first (const $ UndefinedVar aCount) $ getKnown aCount values
         bValue <- first (const $ UndefinedVar bCount) $ getKnown bCount values
-        -- i sincerely wish i could just make MFSolve only return integer values, and i have no idea if this number will work for every input lol
-        if isInt aValue 2 && isInt bValue 2
+        if a' * fromIntegral (round aValue) + b' * fromIntegral (round bValue) == prize'
           then
             return $ round aValue * 3 + round bValue
           else return 0
