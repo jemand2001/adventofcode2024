@@ -2,6 +2,7 @@ module Matrix
   ( matrix,
     height,
     width,
+    size,
     storage,
     (@),
     (@@),
@@ -30,6 +31,8 @@ module Matrix
   )
 where
 
+import GHC.Stack (HasCallStack)
+
 data Matrix a = Matrix {height :: Int, width :: Int, storage :: [[a]]}
 
 data Index = I {x :: Int, y :: Int} deriving (Show, Eq)
@@ -42,7 +45,7 @@ matrix l@(xs : xss)
   where
     w = length xs
 
-(@) :: Matrix a -> Index -> a
+(@) :: (HasCallStack) => Matrix a -> Index -> a
 Matrix h w s @ (I x' y')
   | x' < 0 || x' >= w = error $ "x index " ++ show x' ++ " out of bounds"
   | y' < 0 || y' >= h = error $ "y index " ++ show y' ++ " out of bounds"
@@ -68,7 +71,10 @@ ray start direction = map ((start +) . (direction *) . fromInteger) [0 ..]
 rays :: Index -> [[Index]]
 rays i = [ray i (I dx dy) | dx <- [-1, 0, 1], dy <- [-1, 0, 1], dx /= 0 || dy /= 0]
 
-(@@) :: Matrix a -> [Index] -> [a]
+size :: Matrix a -> Index
+size (Matrix w h _) = w // h
+
+(@@) :: (HasCallStack) => Matrix a -> [Index] -> [a]
 m @@ is = map (m @) is
 
 infixl 9 @@
@@ -85,7 +91,7 @@ validIndexFor :: Matrix a -> Index -> Bool
 validIndexFor m = in2dRange (0 // 0) (width m // height m)
 
 in2dRange :: Index -> Index -> Index -> Bool
-in2dRange (I left top) (I right bottom) (I x_ y_) = x_ >= left && y_ >= top && x_ < right && y_ < bottom
+in2dRange (I l top) (I r bottom) (I x_ y_) = x_ >= l && y_ >= top && x_ < r && y_ < bottom
 
 set :: Matrix a -> Index -> a -> Matrix a
 set m@(Matrix w h s) i@(I x_ y_) v
