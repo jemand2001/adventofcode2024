@@ -28,6 +28,8 @@ module Matrix
     cardinals,
     sameX,
     sameY,
+    rotateRight,
+    rotateLeft,
   )
 where
 
@@ -144,3 +146,7 @@ sameX a b = x a == x b
 
 sameY :: Index -> Index -> Bool
 sameY a b = y a == y b
+
+rotateRight, rotateLeft :: Index -> Index
+rotateRight = (* (0 // -1))
+rotateLeft = (* (0 // 1))
